@@ -35,11 +35,10 @@ module.exports = {
         ...result[0],
       };
 
-      let AccessToken = jwt.sign(tokenData, config.jwtSecretKey, {
+      let Access = jwt.sign(tokenData, config.jwtSecretKey, {
         expiresIn: "2d",
       });
-      console.log(AccessToken)
-      result[0].AccessToken = AccessToken;
+      result[0].AccessToken = Access;
       return helper.response(response, "success", result, 201);
     } catch (error) {
       console.log(error);
