@@ -38,6 +38,7 @@ module.exports = {
       let AccessToken = jwt.sign(tokenData, config.jwtSecretKey, {
         expiresIn: "2d",
       });
+      console.log(AccessToken)
       result[0].AccessToken = AccessToken;
       return helper.response(response, "success", result, 201);
     } catch (error) {
