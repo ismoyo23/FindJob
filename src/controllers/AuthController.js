@@ -13,7 +13,7 @@ module.exports = {
       address: request.body.address,
       phone: request.body.phone,
       company: request.body.company,
-      image: request.file.filename,
+    
     };
     try {
       let result = await AuthModels.AuthRegister(setData);
