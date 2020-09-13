@@ -31,11 +31,14 @@ module.exports = {
     };
     try {
       let result = await AuthModels.AuthLogin(setData);
-
-      let Access = jwt.sign(result, config.jwtSecretKey, {
+      let tokenData = {
+        ...result[0],
+      };
+      delete result[0].password;
+      let AccessToken = jwt.sign(tokenData, config.jwtSecretKey, {
         expiresIn: "2d",
       });
-      result[0].AccessToken = Access;
+      result[0].AccessToken = AccessToken;
       return helper.response(response, "success", result, 201);
     } catch (error) {
       console.log(error);
