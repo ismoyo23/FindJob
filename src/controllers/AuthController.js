@@ -34,7 +34,7 @@ module.exports = {
       let tokenData = {
         ...result[0],
       };
-      delete result[0].password;
+  
       let AccessToken = jwt.sign(tokenData, config.jwtSecretKey, {
         expiresIn: "2d",
       });
