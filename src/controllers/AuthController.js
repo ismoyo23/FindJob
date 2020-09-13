@@ -31,11 +31,8 @@ module.exports = {
     };
     try {
       let result = await AuthModels.AuthLogin(setData);
-      let tokenData = {
-        ...result[0],
-      };
 
-      let Access = jwt.sign(tokenData, config.jwtSecretKey, {
+      let Access = jwt.sign(result, config.jwtSecretKey, {
         expiresIn: "2d",
       });
       result[0].AccessToken = Access;
