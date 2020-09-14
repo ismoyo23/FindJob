@@ -8,6 +8,7 @@ module.exports = {
   Register: async function (request, response) {
     let setData = {
       username: request.body.username,
+
       email: request.body.email,
       password: PasswordHash.generate(request.body.password),
       address: request.body.address,
@@ -34,7 +35,7 @@ module.exports = {
       let tokenData = {
         ...result[0],
       };
-  
+
       let AccessToken = jwt.sign(tokenData, config.jwtSecretKey, {
         expiresIn: "2d",
       });
@@ -68,7 +69,7 @@ module.exports = {
       let search =
         request.query.field === undefined
           ? ""
-          : `WHERE ${request.query.field} LIKE '${request.query.search}'`;
+          : `WHERE ${request.query.field} LIKE '%${request.query.search}%'`;
 
       let sort =
         request.query.colums === undefined
@@ -78,7 +79,7 @@ module.exports = {
       let pagination =
         request.query.page == null
           ? ""
-          : `  LIMIT 12 OFFSET ${request.query.page}`;
+          : `  LIMIT 3 OFFSET ${request.query.page}`;
       let result = await AuthModels.GetUsers(search, sort, pagination);
       return helper.response(response, "success", result, 201);
     } catch (error) {
