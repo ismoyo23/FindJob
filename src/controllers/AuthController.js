@@ -79,7 +79,7 @@ module.exports = {
       let pagination =
         request.query.page == null
           ? ""
-          : `  LIMIT 3 OFFSET ${request.query.page}`;
+          : `  LIMIT 9 OFFSET ${request.query.page}`;
       let result = await AuthModels.GetUsers(search, sort, pagination);
       return helper.response(response, "success", result, 201);
     } catch (error) {
