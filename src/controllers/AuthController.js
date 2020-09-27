@@ -91,6 +91,7 @@ module.exports = {
           ? ""
           : `  LIMIT ${request.query.limit} OFFSET ${request.query.page}`;
       let result = await AuthModels.GetUsers(search, sort, pagination);
+      result[0].page = request.query.page;
       return helper.response(response, "success", result, 201);
     } catch (error) {
       console.log(error);
