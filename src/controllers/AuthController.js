@@ -32,15 +32,25 @@ module.exports = {
     };
     try {
       let result = await AuthModels.AuthLogin(setData);
-      let tokenData = {
-        ...result[0],
-      };
 
-      let AccessToken = jwt.sign(tokenData, config.jwtSecretKey, {
-        expiresIn: "2d",
-      });
-      result[0].AccessToken = AccessToken;
-      return helper.response(response, "success", result, 201);
+      let hashedPassword = result[0].password;
+      let VerifyPassword = PasswordHash.verify(
+        setData.password,
+        hashedPassword
+      );
+      if (VerifyPassword) {
+        let tokenData = {
+          ...result[0],
+        };
+
+        let AccessToken = jwt.sign(tokenData, config.jwtSecretKey, {
+          expiresIn: "2d",
+        });
+        result[0].AccessToken = AccessToken;
+        return helper.response(response, "success", result, 201);
+      } else {
+        console.log("password failed");
+      }
     } catch (error) {
       console.log(error);
       return helper.response(response, "failed", "internal server error", 500);
@@ -79,7 +89,7 @@ module.exports = {
       let pagination =
         request.query.page == null
           ? ""
-          : `  LIMIT 9 OFFSET ${request.query.page}`;
+          : `  LIMIT ${request.query.limit} OFFSET ${request.query.page}`;
       let result = await AuthModels.GetUsers(search, sort, pagination);
       return helper.response(response, "success", result, 201);
     } catch (error) {
